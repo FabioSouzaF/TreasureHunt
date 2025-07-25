@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">TreasureHunt</string>
+    <string name="title_activity_dpad_movement_controls">DPadMovementControls</string>
+    <string name="title_activity_action_buttons">ActionButtons</string>
+    <string name="title_activity_game_grid">GameGrid</string>
+</resources>
