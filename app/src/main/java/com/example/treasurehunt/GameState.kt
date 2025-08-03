@@ -2,16 +2,21 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.room.util.copy
 import com.example.treasurehunt.Cell
 import com.example.treasurehunt.CellContent
+import com.example.treasurehunt.TreasureHunterViewModel
+import com.example.treasurehunt.ui.theme.TreasureHuntTheme
 
-class GameState {
+class GameState (viewModel: TreasureHunterViewModel) {
     val gridSize = 8
     var grid: SnapshotStateList<SnapshotStateList<Cell>> = mutableStateListOf()
     var playerPosition by mutableStateOf(Pair(0, 0))
+
+    var viewModel = viewModel
 
     init {
 
@@ -23,7 +28,7 @@ class GameState {
             grid.add(row)
         }
 
-        grid[playerPosition.second][playerPosition.first].content = CellContent.PLAYER
+        grid[playerPosition.second][playerPosition.first].isPlayer = true
 
 
         placeRandomContent(CellContent.TREASURE, 3)
@@ -49,14 +54,32 @@ class GameState {
             return
         }
 
-        grid[playerPosition.second][playerPosition.first].content = CellContent.EMPTY
+        if (grid[newY][newX].isDig) return
 
+        grid[playerPosition.second][playerPosition.first].isPlayer = false
         playerPosition = Pair(newX, newY)
-        Log.i("aaaa","movendo para ($newX, $newY)")
+        grid[newY][newX].isPlayer = true
 
-        grid[newY][newX].content = CellContent.PLAYER
-        Log.i("aaaa","${grid[newY][newX].content}")
-        // Não precisa mais de "return grid"
+    }
+
+    fun getItem(posX: Int, posY: Int){
+
+        var gridItern = grid[playerPosition.second][playerPosition.first]
+        when (gridItern.content)
+        {
+            CellContent.OBSTACLE -> {
+                this.viewModel.addObstacules()
+                gridItern.isDig = true
+                gridItern.isRevealed = true
+            }
+
+            else -> {
+                gridItern.isRevealed = true
+                gridItern.isDig = true
+            }
+        }
+        grid[playerPosition.second][playerPosition.first] = gridItern
+
     }
 
 

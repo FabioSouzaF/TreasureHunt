@@ -49,16 +49,19 @@ fun GameGrid(gameState: GameState, grid: List<List<Cell>>, modifier: Modifier) {
                             ),
                         contentAlignment = Alignment.Center
                     ) {
-
+                        Image(
+                            painter = painterResource(R.drawable.areia1),
+                            contentDescription = "areia",
+                            modifier = Modifier.fillMaxSize(1f)
+                        )
+                        if (cell.isDig){
+                            Image(
+                                painter = painterResource(R.drawable.areiacavada),
+                                contentDescription = "areia",
+                                modifier = Modifier.fillMaxSize(1f)
+                            )
+                        }
                         when (cell.content) {
-                            CellContent.PLAYER -> {
-                                Image(
-                                    painter = painterResource(R.drawable.pa),
-//                                    painter = painterResource(R.drawable.player_icon),
-                                    contentDescription = "Player",
-                                    modifier = Modifier.fillMaxSize(0.8f)
-                                )
-                            }
                             CellContent.TREASURE -> {
                                 if (cell.isRevealed) {
                                     Image(
@@ -71,17 +74,25 @@ fun GameGrid(gameState: GameState, grid: List<List<Cell>>, modifier: Modifier) {
                                 }
                             }
                             CellContent.OBSTACLE -> {
-                                Image(
-                                    painter = painterResource(R.drawable.dynamite),
+                                if (cell.isRevealed) {
+                                    Image(
+                                        painter = painterResource(R.drawable.dynamite),
 //                                    painter = painterResource(R.drawable.obstacle_icon),
-                                    contentDescription = "Obstáculo",
-                                    modifier = Modifier.fillMaxSize(0.7f)
-                                )
+                                        contentDescription = "Obstáculo",
+                                        modifier = Modifier.fillMaxSize(0.7f)
+                                    )
+                                }
                             }
 
-                            else -> {
+                            else -> {}
+                        }
 
-                            }
+                        if (cell.isPlayer){
+                            Image(
+                                painter = painterResource(R.drawable.pa),
+                                contentDescription = "Player",
+                                modifier = Modifier.fillMaxSize(0.8f)
+                            )
                         }
                     }
                 }

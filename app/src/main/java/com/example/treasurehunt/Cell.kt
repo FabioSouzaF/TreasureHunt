@@ -13,6 +13,8 @@ class Cell (
 {
     var content by mutableStateOf(initialContent)
     var isRevealed by mutableStateOf(initialIsRevealed)
+    var isPlayer by mutableStateOf(false)
+    var isDig by mutableStateOf(false)
 }
 
 

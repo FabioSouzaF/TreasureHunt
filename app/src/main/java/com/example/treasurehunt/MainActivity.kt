@@ -41,8 +41,11 @@ import com.example.treasurehunt.ui.theme.TreasureHuntTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.log
+import androidx.activity.viewModels
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 class MainActivity : ComponentActivity() {
+    private val viewModel: TreasureHunterViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -52,23 +55,24 @@ class MainActivity : ComponentActivity() {
                    modifier = Modifier.fillMaxSize(),
                    color = MaterialTheme.colorScheme.background
                ) {
-                   GameScreen()
+                   GameScreen(viewModel)
                }
             }
         }
     }
 }
 
-@SuppressLint("MutableCollectionMutableState")
+@SuppressLint("MutableCollectionMutableState", "StateFlowValueCalledInComposition")
 @Composable
-fun GameScreen() {
-    val gameState = remember { GameState() }
+fun GameScreen(viewModel: TreasureHunterViewModel) {
+    val gameState = remember { GameState(viewModel) }
 //    var gameState by remember { mutableStateOf(GameState()) }
 
     var grid by remember { mutableStateOf(gameState.grid) }
-
+    val qtdObstacules by viewModel.obstacules.collectAsStateWithLifecycle()
     Log.i("gameState","$gameState")
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        Text("Quantidade de obstaculoes: ${qtdObstacules}")
         Box(modifier = Modifier.align(Alignment.Center)
         ) {
             GameGrid(
@@ -96,7 +100,7 @@ fun GameScreen() {
 
 
         ActionButtons(
-            onDigClick = { /* Lógica para cavar */ },
+            onDigClick = { gameState.getItem(gameState.playerPosition.first, gameState.playerPosition.second) },
             onMetalDetectorClick = { /* Lógica para usar detector */ },
             onDynamiteClick = { /* Lógica para usar dinamite */ }
         )
@@ -106,5 +110,5 @@ fun GameScreen() {
 @Preview(showBackground = true, widthDp = 720, heightDp = 400) // Preview em modo horizontal
 @Composable
 fun PreviewGameScreen() {
-    GameScreen()
+//    GameScreen()
 }
