@@ -22,7 +22,7 @@ import com.example.treasurehunt.ui.theme.TreasureHuntTheme // Seu tema
 
 //@SuppressLint("UnrememberedMutableState")
 @Composable
-fun GameGrid(gameState: GameState, grid: SnapshotStateList<SnapshotStateList<Cell>>, modifier: Modifier) {
+fun GameGrid(gameState: GameState, grid: List<List<Cell>>, modifier: Modifier) {
 
 //    var grid by remember { mutableStateOf(gameState.grid) }
 

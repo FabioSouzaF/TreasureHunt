@@ -18,7 +18,7 @@ class GameState {
         for (i in 0 until gridSize) {
             val row = mutableStateListOf<Cell>()
             for (j in 0 until gridSize) {
-                row.add(Cell(x = j, y = i, content = CellContent.EMPTY))
+                row.add(Cell(x = j, y = i, initialContent = CellContent.EMPTY))
             }
             grid.add(row)
         }
@@ -43,25 +43,22 @@ class GameState {
         }
     }
 
-    fun movePlayer(newX: Int, newY: Int, grid: SnapshotStateList<SnapshotStateList<Cell>> = this.grid): SnapshotStateList<SnapshotStateList<Cell>> {
-
+    fun movePlayer(newX: Int, newY: Int) { // Não precisa mais do parâmetro grid nem do retorno
         if (newX < 0 || newX >= gridSize || newY < 0 || newY >= gridSize) {
             Log.i("aaaa","Limite do grid")
-            return grid
+            return
         }
-//        Log.i("", "entrou no MovePlayer")
 
         grid[playerPosition.second][playerPosition.first].content = CellContent.EMPTY
-
 
         playerPosition = Pair(newX, newY)
         Log.i("aaaa","movendo para ($newX, $newY)")
 
-
         grid[newY][newX].content = CellContent.PLAYER
         Log.i("aaaa","${grid[newY][newX].content}")
-        return grid
+        // Não precisa mais de "return grid"
     }
+
 
     // fun dig(x: Int, y: Int) { ... }
     // fun useMetalDetector(x: Int, y: Int) { ... }

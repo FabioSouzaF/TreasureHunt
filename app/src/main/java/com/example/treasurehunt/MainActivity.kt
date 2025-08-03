@@ -69,26 +69,29 @@ fun GameScreen() {
 
     Log.i("gameState","$gameState")
     Box(modifier = Modifier.fillMaxSize()) {
-//        Box(modifier = Modifier.align(Alignment.Center)
-//        ) {
-//            GameGrid(
-//                gameState = gameState,
-//                grid = grid,
-//                modifier = Modifier.align(Alignment.Center)
-//            )
-//        }
+        Box(modifier = Modifier.align(Alignment.Center)
+        ) {
+            GameGrid(
+                gameState = gameState,
+               grid = grid,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
 
 
         DPadMovementControls(
             onMoveLeft = {
-                grid = gameState.movePlayer(gameState.playerPosition.first - 1, gameState.playerPosition.second)
-
+                gameState.movePlayer(gameState.playerPosition.first - 1, gameState.playerPosition.second)
             },
             onMoveRight = {
-                grid = gameState.movePlayer(gameState.playerPosition.first + 1, gameState.playerPosition.second)
-                },
-            onMoveUp = { grid = gameState.movePlayer(gameState.playerPosition.first, gameState.playerPosition.second - 1) },
-            onMoveDown = { grid = gameState.movePlayer(gameState.playerPosition.first, gameState.playerPosition.second + 1) }
+                gameState.movePlayer(gameState.playerPosition.first + 1, gameState.playerPosition.second)
+            },
+            onMoveUp = {
+                gameState.movePlayer(gameState.playerPosition.first, gameState.playerPosition.second - 1)
+            },
+            onMoveDown = {
+                gameState.movePlayer(gameState.playerPosition.first, gameState.playerPosition.second + 1)
+            }
         )
 
 
