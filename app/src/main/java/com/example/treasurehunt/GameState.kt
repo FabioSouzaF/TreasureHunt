@@ -64,21 +64,23 @@ class GameState (viewModel: TreasureHunterViewModel) {
 
     fun getItem(posX: Int, posY: Int){
 
-        var gridItern = grid[playerPosition.second][playerPosition.first]
-        when (gridItern.content)
+        if(grid[playerPosition.second][playerPosition.first].isDig) return
+
+        var gridInternal = grid[playerPosition.second][playerPosition.first]
+        when (gridInternal.content)
         {
             CellContent.OBSTACLE -> {
                 this.viewModel.addObstacules()
-                gridItern.isDig = true
-                gridItern.isRevealed = true
+                gridInternal.isDig = true
+                gridInternal.isRevealed = true
             }
 
             else -> {
-                gridItern.isRevealed = true
-                gridItern.isDig = true
+                gridInternal.isRevealed = true
+                gridInternal.isDig = true
             }
         }
-        grid[playerPosition.second][playerPosition.first] = gridItern
+        grid[playerPosition.second][playerPosition.first] = gridInternal
 
     }
 
