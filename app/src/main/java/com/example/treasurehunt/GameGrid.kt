@@ -15,17 +15,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.treasurehunt.Cell
 import com.example.treasurehunt.CellContent
 import com.example.treasurehunt.R
+import com.example.treasurehunt.TreasureHunterViewModel
 import com.example.treasurehunt.ui.theme.TreasureHuntTheme // Seu tema
 
 //@SuppressLint("UnrememberedMutableState")
 @Composable
-fun GameGrid(gameState: GameState, grid: List<List<Cell>>, modifier: Modifier) {
+fun GameGrid(gameState: GameState, grid: List<List<Cell>>, modifier: Modifier, viewModel: TreasureHunterViewModel) {
 
 //    var grid by remember { mutableStateOf(gameState.grid) }
-
+    val useMetalDetector by viewModel.useMetalDetector.collectAsStateWithLifecycle()
     Column(
         modifier = Modifier
             .aspectRatio(1f)
@@ -61,30 +63,49 @@ fun GameGrid(gameState: GameState, grid: List<List<Cell>>, modifier: Modifier) {
                                 modifier = Modifier.fillMaxSize(1f)
                             )
                         }
-                        when (cell.content) {
-                            CellContent.TREASURE -> {
-                                if (cell.isRevealed) {
+                        if (useMetalDetector){
+                            when (cell.content) {
+                                CellContent.TREASURE -> {
                                     Image(
                                         painter = painterResource(R.drawable.metaldetector),
-//                                        painter = painterResource(R.drawable.treasure_icon),
                                         contentDescription = "Tesouro",
                                         modifier = Modifier.fillMaxSize(0.7f)
                                     )
-                                } else {
                                 }
-                            }
-                            CellContent.OBSTACLE -> {
-                                if (cell.isRevealed) {
+                                CellContent.OBSTACLE -> {
                                     Image(
                                         painter = painterResource(R.drawable.dynamite),
-//                                    painter = painterResource(R.drawable.obstacle_icon),
                                         contentDescription = "Obstáculo",
                                         modifier = Modifier.fillMaxSize(0.7f)
                                     )
                                 }
-                            }
+                                else -> {}
 
-                            else -> {}
+                            }
+                        }
+                        else {
+                            when (cell.content) {
+                                CellContent.TREASURE -> {
+                                    if (cell.isRevealed) {
+                                        Image(
+                                            painter = painterResource(R.drawable.metaldetector),
+                                            contentDescription = "Tesouro",
+                                            modifier = Modifier.fillMaxSize(0.7f)
+                                        )
+                                    } else {
+                                    }
+                                }
+                                CellContent.OBSTACLE -> {
+                                    if (cell.isRevealed) {
+                                        Image(
+                                            painter = painterResource(R.drawable.dynamite),
+                                            contentDescription = "Obstáculo",
+                                            modifier = Modifier.fillMaxSize(0.7f)
+                                        )
+                                    }
+                                }
+                                else -> {}
+                            }
                         }
 
                         if (cell.isPlayer){
